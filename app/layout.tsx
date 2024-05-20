@@ -16,10 +16,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html data-theme="cupcake" lang="en">
+    <html data-theme="corporate" lang="en">
       <body suppressHydrationWarning={true} className={inter.className}>
         <NavBar />
-        <main>{children}</main>
+        <main className="p-5">{children}</main>
       </body>
     </html>
   );
