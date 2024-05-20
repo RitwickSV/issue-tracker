@@ -8,11 +8,14 @@ import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createIssueSchema } from "@/app/validationSchema";
 import { z } from "zod";
+import ErrorComponent from "@/app/components/ErrorComponent";
+import Spinner from "@/app/components/Spinner";
 
 type IssueForm = z.infer<typeof createIssueSchema>;
 
 const NewIssue = () => {
   const [error, setError] = useState("");
+  const [isSubmitting, setSubmitting] = useState(false);
   const router = useRouter();
   const {
     register,
@@ -27,9 +30,11 @@ const NewIssue = () => {
       <form
         onSubmit={handleSubmit(async (data) => {
           try {
+            setSubmitting(true);
             await axios.post("/api/issues", data);
             router.push("/issues");
           } catch (error) {
+            setSubmitting(false);
             setError("An unexpected error occurred");
           }
         })}
@@ -43,14 +48,7 @@ const NewIssue = () => {
             {...register("title")}
           />
         </div>
-        {errors.title && (
-          <div
-            role="alert"
-            className="alert alert-error rounded-xl animate-shake"
-          >
-            {errors.title.message}
-          </div>
-        )}
+        <ErrorComponent>{errors.title?.message}</ErrorComponent>
         <div>
           <Controller
             name="description"
@@ -64,14 +62,7 @@ const NewIssue = () => {
             )}
           />
         </div>
-        {errors.description && (
-          <div
-            role="alert"
-            className="alert alert-error rounded-xl animate-shake"
-          >
-            {errors.description.message}
-          </div>
-        )}
+        <ErrorComponent>{errors.description?.message}</ErrorComponent>
         {error && (
           <div
             role="alert"
@@ -81,7 +72,9 @@ const NewIssue = () => {
           </div>
         )}
 
-        <button className="btn btn-primary rounded-lg">Add new Issue</button>
+        <button disabled={isSubmitting} className="btn btn-primary rounded-lg">
+          Submit {isSubmitting && <Spinner />}
+        </button>
       </form>
     </>
   );
