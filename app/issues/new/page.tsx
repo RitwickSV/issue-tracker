@@ -5,16 +5,23 @@ import "easymde/dist/easymde.min.css";
 import { Controller, useForm } from "react-hook-form";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { createIssueSchema } from "@/app/validationSchema";
+import { z } from "zod";
 
-interface IssueForm {
-  title: string;
-  description: string;
-}
+type IssueForm = z.infer<typeof createIssueSchema>;
 
 const NewIssue = () => {
   const [error, setError] = useState("");
   const router = useRouter();
-  const { register, control, handleSubmit } = useForm<IssueForm>();
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IssueForm>({
+    resolver: zodResolver(createIssueSchema),
+  });
   return (
     <>
       <form
@@ -36,6 +43,14 @@ const NewIssue = () => {
             {...register("title")}
           />
         </div>
+        {errors.title && (
+          <div
+            role="alert"
+            className="alert alert-error rounded-xl animate-shake"
+          >
+            {errors.title.message}
+          </div>
+        )}
         <div>
           <Controller
             name="description"
@@ -49,6 +64,14 @@ const NewIssue = () => {
             )}
           />
         </div>
+        {errors.description && (
+          <div
+            role="alert"
+            className="alert alert-error rounded-xl animate-shake"
+          >
+            {errors.description.message}
+          </div>
+        )}
         {error && (
           <div
             role="alert"
