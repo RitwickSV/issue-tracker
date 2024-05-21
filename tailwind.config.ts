@@ -21,7 +21,7 @@ const config: Config = {
     ,
   ],
   daisyui: {
-    themes: ["light", "dark", "cupcake", "corporate"],
+    themes: ["light", "dark", "cupcake", "corporate", "emerald"],
   },
 };
 export default config;

@@ -16,7 +16,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html data-theme="corporate" lang="en">
+    <html data-theme="emerald" lang="en">
       <body suppressHydrationWarning={true} className={inter.className}>
         <NavBar />
         <main className="p-5">{children}</main>

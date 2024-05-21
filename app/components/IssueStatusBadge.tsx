@@ -15,7 +15,7 @@ const badgeColors: Record<
 };
 
 const IssueStatusBadge = ({ status }: Props) => {
-  const className = "badge badge-outline " + badgeColors[status].color;
+  let className = "badge badge-outline " + badgeColors[status].color;
   return <div className={className}>{badgeColors[status].label}</div>;
 };
 
