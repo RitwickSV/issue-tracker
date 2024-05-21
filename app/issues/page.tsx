@@ -24,8 +24,7 @@ const IssuesPage = async () => {
             {issues.map((issue) => (
               <tr key={issue.id}>
                 <td>
-                  {issue.title}
-
+                  <Link href={`/issues/${issue.id}`}>{issue.title}</Link>
                   {
                     <span className="text-sm md:hidden">
                       <br />
