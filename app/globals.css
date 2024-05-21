@@ -6,13 +6,9 @@
   h1 {
     @apply text-3xl;
     @apply font-bold;
+    @apply p-2;
   }
 }
-
-
-
-
-
 
 /* 
 :root {
