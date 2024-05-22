@@ -22,9 +22,23 @@ export async function PATCH(request: NextRequest, {params}:Props){
         where : {id : parseInt(params.id)},
         data : {
             title : body.title,
-            description: body.description
+            description: body.description,
+            status: body.status
         }
     })
 
     return NextResponse.json(updatedIssue,{status : 200});
+}
+
+export async function DELETE(request: NextRequest, {params}:Props){
+
+    const issue = await prisma.issue.findUnique({
+        where: {id : parseInt(params.id)}
+    })
+
+    if(!issue) return NextResponse.json({error : 'Issue not found'},{status : 404});
+
+    await prisma.issue.delete({where : {id : parseInt(params.id)}})
+
+    return NextResponse.json({},{status : 200});
 }

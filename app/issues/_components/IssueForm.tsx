@@ -9,7 +9,7 @@ import { createIssueSchema } from "@/app/validationSchema";
 import { z } from "zod";
 import ErrorComponent from "@/app/components/ErrorComponent";
 import Spinner from "@/app/components/Spinner";
-import { Issue } from "@prisma/client";
+import { Issue, Status } from "@prisma/client";
 import SimpleMDE from "react-simplemde-editor";
 
 type IssueFormType = z.infer<typeof createIssueSchema>;
@@ -30,10 +30,19 @@ const IssueForm = ({ issue }: Props) => {
   } = useForm<IssueFormType>({
     resolver: zodResolver(createIssueSchema),
   });
+
+  const statusColorMap = {
+    OPEN: "accent",
+    IN_PROGRESS: "secondary",
+    CLOSED: "primary",
+  };
+
   return (
     <>
       <form
         onSubmit={handleSubmit(async (data) => {
+          console.log(data);
+
           try {
             setSubmitting(true);
             if (issue) await axios.patch("/api/issues/" + issue.id, data);
@@ -57,6 +66,17 @@ const IssueForm = ({ issue }: Props) => {
           />
         </div>
         <ErrorComponent>{errors.title?.message}</ErrorComponent>
+        <div>
+          <select
+            defaultValue={issue?.status}
+            {...register("status")}
+            className="select select-bordered w-full max-w-xs"
+          >
+            <option value={Status.OPEN}>Open</option>
+            <option value={Status.IN_PROGRESS}>In Progress</option>
+            <option value={Status.CLOSED}>Closed</option>
+          </select>
+        </div>
         <div>
           <Controller
             name="description"

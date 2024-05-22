@@ -3,7 +3,7 @@ import classNames from "classnames";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
-import { IoBugSharp } from "react-icons/io5";
+import { BsBugFill } from "react-icons/bs";
 
 const NavBar = () => {
   const currentPath = usePathname();
@@ -16,7 +16,7 @@ const NavBar = () => {
     <>
       <nav className="flex space-x-5 p-5 mb-5 items-center h-15 border-b">
         <Link href="/">
-          <IoBugSharp />
+          <BsBugFill />
         </Link>
         <div className="flex space-x-5">
           {links.map((link) => (
