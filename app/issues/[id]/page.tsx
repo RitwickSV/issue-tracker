@@ -7,6 +7,8 @@ import ReactMarkdown from "react-markdown";
 import { BsPencilSquare, BsTrash } from "react-icons/bs";
 import Modal from "../_components/DeleteModal";
 import axios from "axios";
+import { getServerSession } from "next-auth";
+import authOptions from "@/app/auth/AuthOptions";
 
 interface Props {
   params: { id: string };
@@ -18,6 +20,8 @@ const IssueDetailPage = async ({ params }: Props) => {
   });
 
   if (!issue) return notFound();
+
+  const session = await getServerSession(authOptions);
 
   return (
     <div className="grid sm:grid-cols-1 md:grid-cols-5">
@@ -31,21 +35,25 @@ const IssueDetailPage = async ({ params }: Props) => {
           <ReactMarkdown>{issue.description}</ReactMarkdown>
         </div>
       </div>
-      <div className="flex-col space-y-3 mt-3 p-5">
-        <div>
-          <button className="btn btn-secondary">
-            <BsPencilSquare />
-            <Link href={`/issues/${issue.id}/edit`}>Edit Issue</Link>
-          </button>
+      {session && (
+        <div className="flex-col space-y-3 mt-3 p-5">
+          <div>
+            <Link
+              className="btn btn-secondary"
+              href={`/issues/${issue.id}/edit`}
+            >
+              <BsPencilSquare /> Edit Issue
+            </Link>
+          </div>
+          <div>
+            <Link className="btn btn-accent" href="?modal=true">
+              <BsTrash />
+              Delete Issue
+            </Link>
+            <Modal params={params} />
+          </div>
         </div>
-        <div>
-          <button className="btn btn-accent">
-            <BsTrash />
-            <Link href="?modal=true">Delete Issue</Link>
-          </button>
-          <Modal params={params} />
-        </div>
-      </div>
+      )}
     </div>
   );
 };

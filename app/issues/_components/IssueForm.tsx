@@ -11,6 +11,7 @@ import ErrorComponent from "@/app/components/ErrorComponent";
 import Spinner from "@/app/components/Spinner";
 import { Issue, Status } from "@prisma/client";
 import SimpleMDE from "react-simplemde-editor";
+import classNames from "classnames";
 
 type IssueFormType = z.infer<typeof createIssueSchema>;
 
@@ -70,8 +71,16 @@ const IssueForm = ({ issue }: Props) => {
           <select
             defaultValue={issue?.status}
             {...register("status")}
-            className="select select-bordered w-full max-w-xs"
+            className={classNames({
+              "select-bordered": !issue,
+              "select-bordered select-primary": issue?.status === Status.CLOSED,
+              "select-bordered select-secondary":
+                issue?.status === Status.IN_PROGRESS,
+              "select-bordered select-accent": issue?.status === Status.OPEN,
+              "select-bordered select w-full max-w-xs": true,
+            })}
           >
+            {!issue && <option hidden>Status</option>}
             <option value={Status.OPEN}>Open</option>
             <option value={Status.IN_PROGRESS}>In Progress</option>
             <option value={Status.CLOSED}>Closed</option>
