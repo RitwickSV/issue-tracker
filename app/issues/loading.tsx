@@ -11,9 +11,10 @@ const IssueLoadingPage = () => {
         <table className="table table-auto ">
           <thead className="text-lg bg-gray-200">
             <tr>
-              <td className="w-1/3">Issue</td>
-              <td className="w-1/3 hidden md:table-cell">Status</td>
-              <td className="w-1/3 hidden md:table-cell">Created On</td>
+              <td className="w-1/4">Issue</td>
+              <td className="w-1/4 hidden md:table-cell">Status</td>
+              <td className="w-1/4 hidden md:table-cell">Created On</td>
+              <td className="w-1/4 hidden md:table-cell">Updated On</td>
             </tr>
           </thead>
           <tbody className="bg-gray-50">
@@ -27,6 +28,9 @@ const IssueLoadingPage = () => {
                       <br />
                     </span>
                   }
+                </td>
+                <td className="hidden md:table-cell">
+                  <div className="skeleton h-5 w-auto"></div>
                 </td>
                 <td className="hidden md:table-cell">
                   <div className="skeleton h-5 w-auto"></div>
