@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import NavBar from "./NavBar";
 import AuthProvider from "./auth/Provider";
+import QueryClientProvider from "./QueryClientProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,12 +19,14 @@ export default function RootLayout({
 }>) {
   return (
     <html data-theme="emerald" lang="en">
-      <AuthProvider>
-        <body suppressHydrationWarning={true} className={inter.className}>
-          <NavBar />
-          <main className="px-4">{children}</main>
-        </body>
-      </AuthProvider>
+      <body suppressHydrationWarning={true} className={inter.className}>
+        <QueryClientProvider>
+          <AuthProvider>
+            <NavBar />
+            <main className="px-4">{children}</main>
+          </AuthProvider>
+        </QueryClientProvider>
+      </body>
     </html>
   );
 }

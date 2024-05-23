@@ -1,14 +1,16 @@
+import authOptions from "@/app/auth/AuthOptions";
 import IssueStatusBadge from "@/app/components/IssueStatusBadge";
 import prisma from "@/prisma/client";
+import { getServerSession } from "next-auth";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import React from "react";
-import ReactMarkdown from "react-markdown";
 import { BsPencilSquare, BsTrash } from "react-icons/bs";
+import ReactMarkdown from "react-markdown";
 import Modal from "../_components/DeleteModal";
-import axios from "axios";
-import { getServerSession } from "next-auth";
-import authOptions from "@/app/auth/AuthOptions";
+import { Issue } from "@prisma/client";
+import DeleteButton from "./DeleteButton";
+import EditButton from "./EditButton";
+import SelectUser from "./SelectUser";
 
 interface Props {
   params: { id: string };
@@ -38,19 +40,13 @@ const IssueDetailPage = async ({ params }: Props) => {
       {session && (
         <div className="flex-col space-y-3 mt-3 p-5">
           <div>
-            <Link
-              className="btn btn-secondary"
-              href={`/issues/${issue.id}/edit`}
-            >
-              <BsPencilSquare /> Edit Issue
-            </Link>
+            <SelectUser />
           </div>
           <div>
-            <Link className="btn btn-accent" href="?modal=true">
-              <BsTrash />
-              Delete Issue
-            </Link>
-            <Modal params={params} />
+            <EditButton issueId={issue.id} />
+          </div>
+          <div>
+            <DeleteButton params={params} />
           </div>
         </div>
       )}
