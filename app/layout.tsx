@@ -20,12 +20,12 @@ export default function RootLayout({
   return (
     <html data-theme="emerald" lang="en">
       <body suppressHydrationWarning={true} className={inter.className}>
-        <QueryClientProvider>
-          <AuthProvider>
+        <AuthProvider>
+          <QueryClientProvider>
             <NavBar />
             <main className="px-4">{children}</main>
-          </AuthProvider>
-        </QueryClientProvider>
+          </QueryClientProvider>
+        </AuthProvider>
       </body>
     </html>
   );

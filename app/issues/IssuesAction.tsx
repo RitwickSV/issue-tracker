@@ -1,12 +1,14 @@
 import Link from "next/link";
 import React from "react";
+import { BsFillPlusCircleFill } from "react-icons/bs";
 
 const IssuesAction = () => {
   return (
     <div>
-      <button className="btn btn-secondary">
-        <Link href="/issues/new">Add Issue</Link>
-      </button>
+      <Link className="btn btn-secondary" href="/issues/new">
+        <BsFillPlusCircleFill />
+        Add Issue
+      </Link>
     </div>
   );
 };

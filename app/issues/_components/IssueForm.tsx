@@ -12,6 +12,7 @@ import Spinner from "@/app/components/Spinner";
 import { Issue, Status } from "@prisma/client";
 import SimpleMDE from "react-simplemde-editor";
 import classNames from "classnames";
+import SelectUser from "../[id]/SelectUser";
 
 type IssueFormType = z.infer<typeof createIssueSchema>;
 
@@ -86,6 +87,14 @@ const IssueForm = ({ issue }: Props) => {
             <option value={Status.CLOSED}>Closed</option>
           </select>
         </div>
+        {/* <div>
+          {issue && (
+            <SelectUser
+              {...register("assignedUserId")}
+              issue={issue}
+            ></SelectUser>
+          )}
+        </div> */}
         <div>
           <Controller
             name="description"

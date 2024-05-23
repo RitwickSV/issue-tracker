@@ -11,6 +11,7 @@ import { Issue } from "@prisma/client";
 import DeleteButton from "./DeleteButton";
 import EditButton from "./EditButton";
 import SelectUser from "./SelectUser";
+import { Suspense } from "react";
 
 interface Props {
   params: { id: string };
@@ -39,9 +40,8 @@ const IssueDetailPage = async ({ params }: Props) => {
       </div>
       {session && (
         <div className="flex-col space-y-3 mt-3 p-5">
-          <div>
-            <SelectUser />
-          </div>
+          <SelectUser issue={issue} />
+
           <div>
             <EditButton issueId={issue.id} />
           </div>

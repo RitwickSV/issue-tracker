@@ -1,22 +1,21 @@
 "use client";
-import { User } from "@prisma/client";
-import { useQuery } from "@tanstack/react-query";
+import { Issue, User } from "@prisma/client";
 import axios from "axios";
+import { UsersList } from "./GetListOfUsers";
+import { updateUser } from "./UpdateUser";
 
-const SelectUser = async () => {
-  const {
-    data: users,
-    error,
-    isLoading,
-  } = useQuery<User[]>({
-    queryKey: ["users"],
-    queryFn: () => axios.get("/api/users").then((res) => res.data),
-    staleTime: 60 * 1000,
-  });
+const SelectUser = ({ issue }: { issue: Issue }) => {
+  const { data: users, error, isLoading } = UsersList();
 
   return (
     <div>
-      <select className="select select-bordered prose">
+      <select
+        defaultValue={issue.assignedUserId || ""}
+        onChange={(e) =>
+          updateUser({ issueId: issue.id, userId: e.target.value })
+        }
+        className="select select-bordered prose"
+      >
         <option hidden>Choose User</option>
         {users?.map((user) => (
           <option key={user.id} value={user.id}>
