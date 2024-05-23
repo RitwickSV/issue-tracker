@@ -1,4 +1,13 @@
 "use client";
+import {
+  Avatar,
+  Box,
+  Button,
+  Flex,
+  Heading,
+  HoverCard,
+  Text,
+} from "@radix-ui/themes";
 import classNames from "classnames";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
@@ -18,7 +27,7 @@ const NavBar = () => {
 
   return (
     <>
-      <nav className="flex p-5 mb-5 h-15 justify-between">
+      <div className="flex p-5 mb-5 h-15 justify-between">
         <div className="flex space-x-5 items-center">
           <div>
             <Link href="/">
@@ -41,7 +50,7 @@ const NavBar = () => {
             ))}
           </div>
         </div>
-        <div className="flex space-x-5 items-center">
+        <div className="flex items-center">
           <div>
             {status === "unauthenticated" && (
               <Link href="/api/auth/signin">Login</Link>
@@ -57,36 +66,37 @@ const NavBar = () => {
               </div>
             )}
             {status === "authenticated" && (
-              <div className="dropdown dropdown-hover dropdown-left">
-                <div tabIndex={0} role="button">
-                  <div className="avatar">
-                    {" "}
-                    <div className="w-10 rounded-full">
-                      <img
-                        referrerPolicy="no-referrer"
-                        src={session.user?.image!}
-                      />
-                    </div>
-                  </div>
-                  <div
-                    tabIndex={0}
-                    className="animate-fade dropdown-content z-[2] card card-compact w-64 p-2 bg-gray-50 shadow text-primary-content"
-                  >
-                    <div className="card-body prose">
-                      {/* <h4>{session.user?.name}</h4> */}
-                      <p>{session.user?.email}</p>
-                      <Link className="btn btn-accent" href="/api/auth/signout">
+              <HoverCard.Root>
+                <HoverCard.Trigger>
+                  <Avatar
+                    radius="full"
+                    src={session.user?.image!}
+                    fallback="?"
+                    referrerPolicy="no-referrer"
+                  />
+                </HoverCard.Trigger>
+                <HoverCard.Content maxWidth="300px">
+                  <Flex direction="column" gap="2">
+                    <Heading size="3" as="h3">
+                      {session.user?.name}
+                    </Heading>
+                    <Text as="div" size="2" mb="2">
+                      {session.user?.email}
+                    </Text>
+
+                    <Link href="/api/auth/signout">
+                      <Button radius="large">
                         <IoLogOutOutline />
                         Logout
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-              </div>
+                      </Button>
+                    </Link>
+                  </Flex>
+                </HoverCard.Content>
+              </HoverCard.Root>
             )}
           </div>
         </div>
-      </nav>
+      </div>
     </>
   );
 };

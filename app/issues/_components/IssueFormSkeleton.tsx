@@ -1,10 +1,13 @@
+import { Box, Skeleton } from "@radix-ui/themes";
+
 const IssueFormSkeleton = () => {
   return (
     <>
-      <div className="flex-col space-y-5 max-w-lg">
-        <div className="skeleton w-full h-10"></div>
-        <div className="skeleton w-full h-96"></div>
-      </div>
+      <Box className="space-y-5 max-w-lg">
+        <Skeleton className="h-8" />
+        <Skeleton className="h-8 w-1/5" />
+        <Skeleton height="375px" className="w-full" />
+      </Box>
     </>
   );
 };

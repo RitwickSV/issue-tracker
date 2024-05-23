@@ -1,18 +1,17 @@
 "use client";
-import React, { useState } from "react";
-import "easymde/dist/easymde.min.css";
-import { Controller, useForm } from "react-hook-form";
-import axios from "axios";
-import { useRouter } from "next/navigation";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { createIssueSchema } from "@/app/validationSchema";
-import { z } from "zod";
 import ErrorComponent from "@/app/components/ErrorComponent";
 import Spinner from "@/app/components/Spinner";
+import { createIssueSchema } from "@/app/validationSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Issue, Status } from "@prisma/client";
+import { Button, Select, TextField } from "@radix-ui/themes";
+import axios from "axios";
+import "easymde/dist/easymde.min.css";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 import SimpleMDE from "react-simplemde-editor";
-import classNames from "classnames";
-import SelectUser from "../[id]/SelectUser";
+import { z } from "zod";
 
 type IssueFormType = z.infer<typeof createIssueSchema>;
 
@@ -33,12 +32,6 @@ const IssueForm = ({ issue }: Props) => {
     resolver: zodResolver(createIssueSchema),
   });
 
-  const statusColorMap = {
-    OPEN: "accent",
-    IN_PROGRESS: "secondary",
-    CLOSED: "primary",
-  };
-
   return (
     <>
       <form
@@ -56,73 +49,56 @@ const IssueForm = ({ issue }: Props) => {
             setError("An unexpected error occurred");
           }
         })}
-        className="flex-col space-y-2 max-w-lg"
+        className="space-y-5 max-w-lg"
       >
-        <div>
-          <input
-            type="text"
-            placeholder="Title"
-            className="input input-bordered w-full max-w-lg rounded-xl"
-            defaultValue={issue?.title}
-            {...register("title")}
-          />
-        </div>
-        <ErrorComponent>{errors.title?.message}</ErrorComponent>
-        <div>
-          <select
-            defaultValue={issue?.status}
-            {...register("status")}
-            className={classNames({
-              "select-bordered": !issue,
-              "select-bordered select-primary": issue?.status === Status.CLOSED,
-              "select-bordered select-secondary":
-                issue?.status === Status.IN_PROGRESS,
-              "select-bordered select-accent": issue?.status === Status.OPEN,
-              "select-bordered select w-full max-w-xs": true,
-            })}
-          >
-            {!issue && <option hidden>Status</option>}
-            <option value={Status.OPEN}>Open</option>
-            <option value={Status.IN_PROGRESS}>In Progress</option>
-            <option value={Status.CLOSED}>Closed</option>
-          </select>
-        </div>
-        {/* <div>
-          {issue && (
-            <SelectUser
-              {...register("assignedUserId")}
-              issue={issue}
-            ></SelectUser>
-          )}
-        </div> */}
-        <div>
-          <Controller
-            name="description"
-            control={control}
-            defaultValue={issue?.description}
-            render={({ field }) => (
-              <SimpleMDE
-                className="w-full max-w-lg rounded-2xl"
-                placeholder="Description"
-                {...field}
-              />
-            )}
-          />
-        </div>
-        <ErrorComponent>{errors.description?.message}</ErrorComponent>
-        {error && (
-          <div
-            role="alert"
-            className="alert alert-error rounded-xl animate-shake"
-          >
-            <span>{error}</span>
-          </div>
-        )}
+        <TextField.Root
+          placeholder="Title"
+          type="text"
+          className="w-full max-w-lg rounded-xl p-5"
+          defaultValue={issue?.title}
+          {...register("title")}
+        />
 
-        <button disabled={isSubmitting} className="btn btn-primary rounded-lg">
+        <ErrorComponent>{errors.title?.message}</ErrorComponent>
+
+        <Controller
+          name="status"
+          control={control}
+          defaultValue={issue?.status}
+          render={({ field }) => (
+            <Select.Root onValueChange={field.onChange}>
+              <Select.Trigger placeholder="Status" />
+              <Select.Content>
+                <Select.Item value={Status.OPEN}>Open</Select.Item>
+                <Select.Item value={Status.IN_PROGRESS}>
+                  In Progress
+                </Select.Item>
+                <Select.Item value={Status.CLOSED}>Closed</Select.Item>
+              </Select.Content>
+            </Select.Root>
+          )}
+        />
+
+        <Controller
+          name="description"
+          control={control}
+          defaultValue={issue?.description}
+          render={({ field }) => (
+            <SimpleMDE
+              className="w-full max-w-lg rounded-2xl"
+              placeholder="Description"
+              {...field}
+            />
+          )}
+        />
+
+        <ErrorComponent>{errors.description?.message}</ErrorComponent>
+        {error && <span>{error}</span>}
+
+        <Button disabled={isSubmitting}>
           {issue ? "Edit Issue" : "Submit New Issue"}{" "}
           {isSubmitting && <Spinner />}
-        </button>
+        </Button>
       </form>
     </>
   );

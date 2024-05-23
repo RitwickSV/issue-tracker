@@ -3,27 +3,35 @@ import { Issue, User } from "@prisma/client";
 import axios from "axios";
 import { UsersList } from "./GetListOfUsers";
 import { updateUser } from "./UpdateUser";
+import { Select } from "@radix-ui/themes";
 
 const SelectUser = ({ issue }: { issue: Issue }) => {
   const { data: users, error, isLoading } = UsersList();
 
   return (
-    <div>
-      <select
-        defaultValue={issue.assignedUserId || ""}
-        onChange={(e) =>
-          updateUser({ issueId: issue.id, userId: e.target.value })
-        }
-        className="select select-bordered prose"
+    <>
+      <Select.Root
+        defaultValue={issue.assignedUserId || "unassigned"}
+        onValueChange={(userId) => {
+          axios.patch("/api/issues/" + issue.id, {
+            assignedUserId: userId === "unassigned" ? null : userId,
+          });
+        }}
       >
-        <option hidden>Choose User</option>
-        {users?.map((user) => (
-          <option key={user.id} value={user.id}>
-            {user.name}
-          </option>
-        ))}
-      </select>
-    </div>
+        <Select.Trigger placeholder="Assign a User..." />
+        <Select.Content>
+          <Select.Group>
+            <Select.Label>Suggestions</Select.Label>
+            <Select.Item value="unassigned">Unassign</Select.Item>
+            {users?.map((user) => (
+              <Select.Item key={user.id} value={user.id}>
+                {user.name}
+              </Select.Item>
+            ))}
+          </Select.Group>
+        </Select.Content>
+      </Select.Root>
+    </>
   );
 };
 

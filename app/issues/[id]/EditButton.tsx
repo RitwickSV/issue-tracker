@@ -1,3 +1,4 @@
+import { Button } from "@radix-ui/themes";
 import Link from "next/link";
 import React from "react";
 import { BsPencilSquare } from "react-icons/bs";
@@ -10,8 +11,10 @@ const EditButton = ({ issueId }: Props) => {
   return (
     <div>
       {" "}
-      <Link className="btn btn-secondary" href={`/issues/${issueId}/edit`}>
-        <BsPencilSquare /> Edit Issue
+      <Link href={`/issues/${issueId}/edit`}>
+        <Button>
+          <BsPencilSquare /> Edit Issue
+        </Button>
       </Link>
     </div>
   );

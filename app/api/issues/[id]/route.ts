@@ -18,10 +18,10 @@ export async function PATCH(request: NextRequest, {params}:Props){
 
     if(!validation.success) return NextResponse.json(validation.error.format(), {status : 400});
 
-    if (body.assignedUserId) {
-        const user = await prisma.user.findUnique({where : {id: body.assignedUserId}})
-        if(!user) return NextResponse.json({error: "Invalid user"}, {status:401})
-    }
+    // if (body.assignedUserId) {
+    //     const user = await prisma.user.findUnique({where : {id: body.assignedUserId}})
+    //     if(!user) return NextResponse.json({error: "Invalid user"}, {status:401})
+    // }
 
 
     const issue = await prisma.issue.findUnique({
