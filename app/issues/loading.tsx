@@ -3,7 +3,7 @@ import IssuesAction from "./IssuesAction";
 import { Flex, Skeleton, Table } from "@radix-ui/themes";
 import IssueStatusBadge from "../components/IssueStatusBadge";
 
-const issues = [1, 2, 3, 4, 5];
+const issues = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 const IssueLoadingPage = () => {
   return (
