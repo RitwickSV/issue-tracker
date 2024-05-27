@@ -8,6 +8,8 @@ import AuthProvider from "./auth/Provider";
 import QueryClientProvider from "./QueryClientProvider";
 
 import { Theme, ThemePanel } from "@radix-ui/themes";
+import useTheme from "./store";
+import ThemeProvider from "./ThemeProvider";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
@@ -18,13 +20,11 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={inter.variable}>
       <body suppressHydrationWarning={true} className={inter.className}>
-        <Theme accentColor="blue" grayColor="gray" radius="large">
+        <ThemeProvider>
           <AuthProvider>
             <QueryClientProvider>
               <NavBar />
@@ -32,7 +32,7 @@ export default function RootLayout({
             </QueryClientProvider>
           </AuthProvider>
           {/* <ThemePanel /> */}
-        </Theme>
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -15,6 +15,9 @@ import { usePathname } from "next/navigation";
 import React from "react";
 import { BsBugFill } from "react-icons/bs";
 import { IoLogInOutline, IoLogOutOutline } from "react-icons/io5";
+import ThemeToggler from "./ThemeToggler";
+import useTheme from "./store";
+import { SunIcon, MoonIcon } from "@radix-ui/react-icons";
 
 const NavBar = () => {
   const currentPath = usePathname();
@@ -24,17 +27,19 @@ const NavBar = () => {
   ];
 
   const { status, data: session } = useSession();
+  const theme = useTheme((s) => s.theme);
+  const currentTheme = theme ? theme : "light";
 
   return (
     <>
-      <div className="flex p-5 mb-5 h-15 justify-between">
-        <div className="flex space-x-5 items-center">
+      <Flex className="p-5 mb-5 h-15 justify-between">
+        <Flex className="space-x-5 items-center">
           <div>
             <Link href="/">
               <BsBugFill />
             </Link>
           </div>
-          <div className="flex space-x-5">
+          <Flex className=" space-x-5">
             {links.map((link) => (
               <Link
                 key={link.href}
@@ -48,9 +53,17 @@ const NavBar = () => {
                 {link.label}
               </Link>
             ))}
-          </div>
-        </div>
-        <div className="flex items-center">
+          </Flex>
+        </Flex>
+        <Flex className="items-center space-x-5">
+          <Flex className="items-center">
+            <ThemeToggler theme={currentTheme} />
+            {/* {theme === "light" ? (
+              <SunIcon className="inline animate-spin animate-once animate-ease-in-out animate-normal" />
+            ) : (
+              <MoonIcon className="inline animate-spin animate-once animate-ease-in-out animate-normal" />
+            )} */}
+          </Flex>
           <div>
             {status === "unauthenticated" && (
               <Link href="/api/auth/signin">Login</Link>
@@ -95,8 +108,8 @@ const NavBar = () => {
               </HoverCard.Root>
             )}
           </div>
-        </div>
-      </div>
+        </Flex>
+      </Flex>
     </>
   );
 };
